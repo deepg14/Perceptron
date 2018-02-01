@@ -16,22 +16,28 @@ typedef struct perceptron {
 //method to train the perceptron off of inputted data
 //does not return anything but updates the parameters of the
 //inputted perceptron object
-void train(Perceptron p, int *x, int *y, int *expectedOut, int numPoints, int iterations) {
+void train(Perceptron p, int *xData, int *yData, int numPoints, int iterations) {
     int i, j; //iterators
 
-    double x[numPoints]; //initialize data
-    double y[numPoints];
-    int expected[numPoints];
+    // double x[numPoints]; //initialize data
+    // double y[numPoints];
+    // int expected[numPoints];
+
+    int x = xData; //initialize array pointers
+    int y = yData;
+    int xStart = xData; //store starting pointers
+    int yStart = ydata;
+    // int expectStart = exepctedOut;
 
     int numMistakes = 0; //counter for number of mistakes
 
     for(t = 0; t < iterations; t++) {
         for(i = 0; i < numPoints; i++) {
             //if a mistake is made
-            if (y[i]*(p.slope * x[i] + p.offset) <= 0) {
+            if ((*y)[i]*(p.slope * (*x)[i] + p.offset) <= 0) {
                 numMistakes++;
-                p.slope = p.slope + y[i] * x[i];
-                p.offset = p.offset + y[i];
+                p.slope = p.slope + (*y)[i] * (*x)[i];
+                p.offset = p.offset + (*y)[i];
 
                 //uncomment to get report of parameter changes at each mistake
                 printf("%s\n", "------------------------------------------------");
@@ -42,8 +48,13 @@ void train(Perceptron p, int *x, int *y, int *expectedOut, int numPoints, int it
                 printf("%s", "Offset: ");
                 printf("%f\n", p.offset);
             }
-            //if no mistake is made, then move on to next data point
+            //move to next data point
+            x++;
+            y++;
         }
+        //reset pointers before moving on to next iteration
+        x = xStart;
+        y = yStart;
     }
 
     //report the results of the training
@@ -97,8 +108,8 @@ int main(void) {
         }
     }
 
-
     //train the perceptron
+    train(myModel, x, y, numTrainingPoints, 5);
 
     //test the perceptron
 
